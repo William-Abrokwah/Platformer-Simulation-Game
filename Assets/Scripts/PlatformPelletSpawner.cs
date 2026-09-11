@@ -7,6 +7,7 @@ public class PlatformPelletSpawner : MonoBehaviour
     public int totalPellets = 8;
     public float pelletHeight = 0.5f; // So pellet sits slightly above the platform
     public float minDistanceBetweenPellets = 1f; // To prevent overlap
+    public float minDistanceFromPlayer = 2f;
 
     private List<Vector3> spawnedPositions = new List<Vector3>();
 
@@ -29,6 +30,13 @@ public class PlatformPelletSpawner : MonoBehaviour
             return;
         }
 
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            Debug.LogError("No GameObject with the Player tag found!");
+            return;
+        }
+
         Bounds bounds = platformCollider.bounds;
 
         int attempts = 0;
@@ -40,8 +48,14 @@ public class PlatformPelletSpawner : MonoBehaviour
             float randomX = Random.Range(bounds.min.x + xPadding, bounds.max.x - xPadding);
             float randomZ = Random.Range(bounds.min.z + zPaddingMin, bounds.max.z - zPaddingMax); 
             Vector3 randomSpawnPosition = new Vector3(randomX, bounds.max.y + pelletHeight, randomZ);
+            
+            // Check distance from player
+            if (Vector3.Distance(player.transform.position, randomSpawnPosition) < minDistanceFromPlayer)
+            {
+                continue;
+            }
 
-            // Checking if position is valid
+            // Checking distance from other pellets
             bool isValidPos = true;
             foreach (Vector3 pos in spawnedPositions) {
                 if (Vector3.Distance(pos, randomSpawnPosition) < minDistanceBetweenPellets) {
