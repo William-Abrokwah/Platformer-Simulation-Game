@@ -6,7 +6,8 @@ TagManager:
   tags:
   - CinemachineTarget
   - Tree
-  - ProjectileBoundary
+  - Bot
+  - Projectile
   layers:
   - Default
   - TransparentFX

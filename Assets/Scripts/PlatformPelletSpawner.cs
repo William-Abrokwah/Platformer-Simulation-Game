@@ -16,12 +16,12 @@ public class PlatformPelletSpawner : MonoBehaviour
     public float zPaddingMin = 1f;
     public float zPaddingMax = 3f; // The 3f is to account for the size of the trees (2f)
 
-    void Start()
+    private void Start()
     {
        SpawnPellets(); 
     }
 
-    void SpawnPellets()
+    private void SpawnPellets()
     {
         Collider platformCollider = GetComponent<Collider>();
         if (platformCollider == null)
