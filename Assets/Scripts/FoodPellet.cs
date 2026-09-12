@@ -7,11 +7,14 @@ public class FoodPellet : MonoBehaviour
         // Check if the player collected the pellet
         if (other.CompareTag("Player"))
         {
-            // Add ammo to player 
-            // To be added
-
-            // Destroy the pellet object so it disappears
-            Destroy(gameObject);
+            // Add ammo to player
+            PlayerShooting shooter = other.GetComponent<PlayerShooting>();
+            if (shooter != null)
+            {
+                shooter.ammoCount++;
+                // Destroy the pellet object so it disappears
+                Destroy(gameObject);
+            }
         }
 
         // Check if the bot collected the pellet

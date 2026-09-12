@@ -1,0 +1,48 @@
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PlayerShooting : MonoBehaviour
+{
+    public GameObject projectilePrefab;
+    public Transform cameraTransform;
+    public float projectileSpeed = 30f;
+    
+    [HideInInspector]
+    public int ammoCount = 0;
+    [HideInInspector]
+    public bool isProjectileInFlight = false;
+
+    void Update()
+    {
+        // Check for left click
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            if (ammoCount > 0 && !isProjectileInFlight)
+            {
+                FireProjectile();
+            }
+        }
+    }
+
+    void FireProjectile() {
+        ammoCount--;
+        isProjectileInFlight = true;
+
+        // Instantiate the projectile in front of the player
+        Vector3 spawnPosition = cameraTransform.position + cameraTransform.forward * 1f;
+        GameObject proj = Instantiate(projectilePrefab, spawnPosition, cameraTransform.rotation);
+
+        // Pass player reference to projectile script
+        ProjectileBehaviour projScript = proj.GetComponent<ProjectileBehaviour>();
+        if (projScript != null)
+        {
+            projScript.ownerShooter = this;
+        }
+
+        // Set projectile velocity
+        Rigidbody rb = proj.GetComponent<Rigidbody>();
+        if (rb != null) {
+            rb.linearVelocity = cameraTransform.forward * projectileSpeed;
+        }
+    }
+}

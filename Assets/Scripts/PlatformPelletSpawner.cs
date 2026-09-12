@@ -41,7 +41,8 @@ public class PlatformPelletSpawner : MonoBehaviour
 
         int attempts = 0;
         int maxAttempts = 1000; // Bound to prevent an infinite loop
-        while (spawnedPositions.Count < totalPellets && attempts < maxAttempts) {
+        while (spawnedPositions.Count < totalPellets && attempts < maxAttempts) 
+        {
             attempts++;
 
             // Generating a random position within the platform's surface bounds
@@ -57,15 +58,18 @@ public class PlatformPelletSpawner : MonoBehaviour
 
             // Checking distance from other pellets
             bool isValidPos = true;
-            foreach (Vector3 pos in spawnedPositions) {
-                if (Vector3.Distance(pos, randomSpawnPosition) < minDistanceBetweenPellets) {
+            foreach (Vector3 pos in spawnedPositions) 
+            {
+                if (Vector3.Distance(pos, randomSpawnPosition) < minDistanceBetweenPellets) 
+                {
                     isValidPos = false;
                     break;
                 }
             }
 
             // Spawn pellet only if position is valid
-            if (isValidPos) {
+            if (isValidPos) 
+            {
                 Instantiate(pelletPrefab, randomSpawnPosition, Quaternion.identity);
                 spawnedPositions.Add(randomSpawnPosition);
             }
