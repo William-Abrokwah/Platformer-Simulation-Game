@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ProjectileBehaviour : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
     [HideInInspector]
     public PlayerShooting ownerShooter;
@@ -17,16 +17,7 @@ public class ProjectileBehaviour : MonoBehaviour
         DestroyProjectile();
     }
 
-    private void OnTriggerExit(Collider other)
-    {
-        // Destroy projectile if it exits platform bounds
-        if (other.CompareTag("ProjectileBoundary"))
-        {
-            DestroyProjectile();
-        }
-    }
-
-    void DestroyProjectile()
+    public void DestroyProjectile()
     {
         if (ownerShooter != null)
         {

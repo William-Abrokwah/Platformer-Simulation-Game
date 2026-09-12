@@ -12,7 +12,7 @@ public class PlayerShooting : MonoBehaviour
     [HideInInspector]
     public bool isProjectileInFlight = false;
 
-    void Update()
+    private void Update()
     {
         // Check for left click
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
@@ -24,7 +24,7 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
-    void FireProjectile() {
+    private void FireProjectile() {
         ammoCount--;
         isProjectileInFlight = true;
 
@@ -33,7 +33,7 @@ public class PlayerShooting : MonoBehaviour
         GameObject proj = Instantiate(projectilePrefab, spawnPosition, cameraTransform.rotation);
 
         // Pass player reference to projectile script
-        ProjectileBehaviour projScript = proj.GetComponent<ProjectileBehaviour>();
+        Projectile projScript = proj.GetComponent<Projectile>();
         if (projScript != null)
         {
             projScript.ownerShooter = this;
