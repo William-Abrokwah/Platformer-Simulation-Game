@@ -27,11 +27,13 @@ public class PlayerShooting : MonoBehaviour
     public void AddAmmo(int amount)
     {
         ammoCount += amount;
+
+        // Send the updated total to the UI Manager
+        UIManager.Instance.UpdateAmmoDisplay(ammoCount);
     }
 
     private void FireProjectile() {
-        ammoCount--;
-        isProjectileInFlight = true;
+        if (ammoCount <= 0) return;
 
         // Instantiate the projectile in front of the player
         Vector3 spawnPosition = cameraTransform.position + cameraTransform.forward * 1f;
@@ -49,5 +51,11 @@ public class PlayerShooting : MonoBehaviour
         if (rb != null) {
             rb.linearVelocity = cameraTransform.forward * projectileSpeed;
         }
+
+        ammoCount--;
+        isProjectileInFlight = true;
+
+        // Update the UI immediately after shooting
+        UIManager.Instance.UpdateAmmoDisplay(ammoCount);
     }
 }
