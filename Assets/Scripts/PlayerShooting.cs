@@ -3,9 +3,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerShooting : MonoBehaviour
 {
-    public GameObject projectilePrefab;
-    public Transform cameraTransform;
-    public float projectileSpeed = 30f;
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Transform cameraTransform;
+    [SerializeField] private float projectileSpeed = 30f;
     
     [HideInInspector]
     public int ammoCount = 0;
