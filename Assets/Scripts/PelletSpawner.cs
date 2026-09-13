@@ -1,54 +1,48 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class PlatformPelletSpawner : MonoBehaviour
+public class PelletSpawner : MonoBehaviour
 {
-    public GameObject pelletPrefab;
-    public int totalPellets = 8;
-    public float pelletHeight = 0.5f; // So pellet sits slightly above the platform
-    public float minDistanceBetweenPellets = 1f; // To prevent overlap
-    public float minDistanceFromPlayer = 2f;
+    [SerializeField] private GameObject pelletPrefab;
+    [SerializeField] private int totalPellets = 8;
+    [SerializeField] private float pelletHeight = 0.5f;
+    [SerializeField] private float minDistanceBetweenPellets = 1f;
+    [SerializeField] private float minDistanceFromPlayer = 2f;
 
-    private List<Vector3> spawnedPositions = new List<Vector3>();
+    private List<GameObject> spawnedPellets = new List<GameObject>();
 
-    // Spawn padding from the edges of the platform
-    public float xPadding = 1f;
-    public float zPaddingMin = 1f;
-    public float zPaddingMax = 3f; // The 3f is to account for the size of the trees (2f)
+    [Header("Pellet padding from the edges of the platform")]
+    [SerializeField] private float xPadding = 1f;
+    [SerializeField] private float zPaddingMin = 1f;
+    [SerializeField] private float zPaddingMax = 3f; // +2f to account for the size of the trees 
 
-    private void Start()
+    public List<GameObject> GetSpawnedPellets()
     {
-       SpawnPellets(); 
+        return spawnedPellets;
     }
 
-    private void SpawnPellets()
+    public void SpawnPellets()
     {
         Collider platformCollider = GetComponent<Collider>();
-        if (platformCollider == null)
-        {
-            Debug.LogError("The platform needs a Collider!");
-            return;
-        }
+        if (platformCollider == null) { Debug.LogError("The platform needs a Collider!"); return;}
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null)
-        {
-            Debug.LogError("No GameObject with the Player tag found!");
-            return;
-        }
+        if (player == null) { Debug.LogError("No GameObject with the Player tag found!"); return; }
 
+        List<Vector3> spawnedPositions = new List<Vector3>();
         Bounds bounds = platformCollider.bounds;
 
         int attempts = 0;
         int maxAttempts = 1000; // Bound to prevent an infinite loop
-        while (spawnedPositions.Count < totalPellets && attempts < maxAttempts) 
+
+        while (spawnedPellets.Count < totalPellets && attempts < maxAttempts) 
         {
             attempts++;
 
             // Generating a random position within the platform's surface bounds
             float randomX = Random.Range(bounds.min.x + xPadding, bounds.max.x - xPadding);
             float randomZ = Random.Range(bounds.min.z + zPaddingMin, bounds.max.z - zPaddingMax); 
-            Vector3 randomSpawnPosition = new Vector3(randomX, bounds.max.y + pelletHeight, randomZ);
+            Vector3 randomSpawnPosition = new Vector3(randomX, bounds.min.y + pelletHeight, randomZ);
             
             // Check distance from player
             if (Vector3.Distance(player.transform.position, randomSpawnPosition) < minDistanceFromPlayer)
@@ -70,7 +64,9 @@ public class PlatformPelletSpawner : MonoBehaviour
             // Spawn pellet only if position is valid
             if (isValidPos) 
             {
-                Instantiate(pelletPrefab, randomSpawnPosition, Quaternion.identity);
+                GameObject pellet = Instantiate(pelletPrefab, randomSpawnPosition, Quaternion.identity);
+
+                spawnedPellets.Add(pellet);
                 spawnedPositions.Add(randomSpawnPosition);
             }
         }

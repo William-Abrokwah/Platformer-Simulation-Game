@@ -24,6 +24,11 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
+    public void AddAmmo(int amount)
+    {
+        ammoCount += amount;
+    }
+
     private void FireProjectile() {
         ammoCount--;
         isProjectileInFlight = true;

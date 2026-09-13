@@ -2,24 +2,21 @@ using UnityEngine;
 
 public class BotSpawner : MonoBehaviour
 {
-    public GameObject botPrefab;
-    public float spawnDelay = 2f;
-    public Vector3 spawnOffset = new Vector3(8f, 1.25f, 0f);
+    [SerializeField] private GameObject botPrefab;
+    [SerializeField] private Transform botSpawnPoint;
 
-    private bool hasSpawned = false;
-
-    void Start()
+    public void SpawnBot()
     {
-        Invoke(nameof(SpawnBot), spawnDelay);
-    }
+        if (botPrefab != null && botSpawnPoint != null)
+        {
+            GameObject bot = Instantiate(botPrefab, botSpawnPoint.position, botSpawnPoint.rotation);
 
-    // Public for future spawning
-    public void SpawnBot() 
-    {
-        if (hasSpawned || botPrefab == null) return;
+            Bot botScript = bot.GetComponent<Bot>();
 
-        Vector3 spawnPos = transform.position + spawnOffset;
-        Instantiate(botPrefab, spawnPos, Quaternion.identity);
-        hasSpawned = true;
+            if (botScript != null)
+            {
+                botScript.SetPelletSpawner(GetComponent<PelletSpawner>());
+            }
+        }
     }
 }

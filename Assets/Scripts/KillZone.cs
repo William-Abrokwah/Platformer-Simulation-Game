@@ -10,6 +10,8 @@ public class KillZone : MonoBehaviour
         {
             if (other.CompareTag("Player"))
             {
+                // Trigger the game over screen on fall
+
                 RespawnPlayer(other.gameObject);
             }
         }
@@ -31,7 +33,5 @@ public class KillZone : MonoBehaviour
             player.transform.position = spawnPoint.position;
             player.transform.rotation = spawnPoint.rotation;
         }
-
-        // Add Game over screen here
     }
 }

@@ -1,32 +1,43 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Bot : MonoBehaviour
 {
     [SerializeField] private float speed = 1f;
     
+    private PelletSpawner currentSpawner;
     private GameObject currentTargetPellet;
     private bool isSearching = true;
-
-    private void Start()
+    
+    // Starts searching for pellets the moment spawner is set
+    public void SetPelletSpawner(PelletSpawner spawner)
     {
-        StartCoroutine(FindNextPellet());
+        if (spawner == null) {Debug.LogError("Bot requires a Pellet spawner to be set!"); return;}
+
+        currentSpawner = spawner;
+        StartCoroutine(FindNextPellet()); 
     }
 
     private void Update()
     {
+        if (currentSpawner == null) return;
+
         // Look for target if we don't have target and aren't alreadly looking
         if (currentTargetPellet == null)
         {
-            if (!isSearching) 
-            {
-                StartCoroutine(FindNextPellet());
-            }
+            if (!isSearching) StartCoroutine(FindNextPellet());
             return;
         }
 
-        // Move toward current target pellet in a straight line
+        MoveAndLookAtTarget();
+    }
+
+    private void MoveAndLookAtTarget() {
+        // Get target position (maintaining the the bot's current Y height)
         Vector3 targetPosition = new Vector3(currentTargetPellet.transform.position.x, transform.position.y, currentTargetPellet.transform.position.z);
+
+        // Move towards current target
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
 
         // Turn to face the target pellet
@@ -36,13 +47,16 @@ public class Bot : MonoBehaviour
     private IEnumerator FindNextPellet() 
     {
         isSearching = true;
-        FoodPellet[] pellets = FindObjectsByType<FoodPellet>(FindObjectsSortMode.None);
+        List<GameObject> pellets = currentSpawner.GetSpawnedPellets();
 
-        if (pellets.Length > 0)
+        // Removes all "destroyed" pellets from the list
+        pellets.RemoveAll(pellet => pellet == null);
+
+        if (pellets.Count > 0)
         {
             // Pick a random pellet from the remaining
-            int randomIndex = Random.Range(0, pellets.Length);
-            currentTargetPellet = pellets[randomIndex].gameObject;
+            int randomIndex = Random.Range(0, pellets.Count);
+            currentTargetPellet = pellets[randomIndex];
         } 
         else
         {
