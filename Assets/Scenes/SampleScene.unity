@@ -465,8 +465,6 @@ MonoBehaviour:
   projectilePrefab: {fileID: 1510666585858568894, guid: d77d818d22110ff49ba63349f345a070, type: 3}
   cameraTransform: {fileID: 1910118380}
   projectileSpeed: 30
-  ammoCount: 0
-  isProjectileInFlight: 0
 --- !u!1 &362491155
 GameObject:
   m_ObjectHideFlags: 0
@@ -2089,7 +2087,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1014031709
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3161,7 +3159,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1733298433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3175,8 +3173,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   ammoText: {fileID: 362491157}
-  statusText: {fileID: 490655633}
-  gameOverPanel: {fileID: 1014031708}
 --- !u!4 &1733298434
 Transform:
   m_ObjectHideFlags: 0

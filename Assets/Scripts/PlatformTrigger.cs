@@ -20,6 +20,9 @@ public class PlatformTrigger : MonoBehaviour
         // Activate platfrom if player enters
         if (!hasActivated && other.CompareTag("Player"))
         {
+            PlayerShooting shooter = other.GetComponent<PlayerShooting>();
+            if (shooter != null) shooter.ResetAmmo();
+
             ActivatePlatform();
             Debug.Log("Platform activated!");
         }

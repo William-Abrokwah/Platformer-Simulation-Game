@@ -7,10 +7,8 @@ public class PlayerShooting : MonoBehaviour
     [SerializeField] private Transform cameraTransform;
     [SerializeField] private float projectileSpeed = 30f;
     
-    [HideInInspector]
-    public int ammoCount = 0;
-    [HideInInspector]
-    public bool isProjectileInFlight = false;
+    private int ammoCount = 0;
+    private bool isProjectileInFlight = false;
 
     private void Update()
     {
@@ -30,6 +28,16 @@ public class PlayerShooting : MonoBehaviour
 
         // Send the updated total to the UI Manager
         UIManager.Instance.UpdateAmmoDisplay(ammoCount);
+    }
+
+    public void ResetAmmo()
+    {
+        ammoCount = 0;
+        UIManager.Instance.UpdateAmmoDisplay(ammoCount);
+    }
+
+    public void SetProjectileStatus(bool status) {
+        isProjectileInFlight = status;
     }
 
     private void FireProjectile() {

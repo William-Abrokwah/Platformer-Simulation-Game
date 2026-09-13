@@ -21,7 +21,7 @@ public class Projectile : MonoBehaviour
     {
         if (ownerShooter != null)
         {
-            ownerShooter.isProjectileInFlight = false;
+            ownerShooter.SetProjectileStatus(false);
         }
         Destroy(gameObject);
     }
