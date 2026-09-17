@@ -9,6 +9,7 @@ public class BotSpawner : MonoBehaviour
     {
         if (botPrefab != null && botSpawnPoint != null)
         {
+            // Create bot
             GameObject bot = Instantiate(botPrefab, botSpawnPoint.position, botSpawnPoint.rotation);
 
             Bot botScript = bot.GetComponent<Bot>();

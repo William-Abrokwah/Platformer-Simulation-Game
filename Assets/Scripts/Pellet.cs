@@ -34,6 +34,7 @@ public class Pellet : MonoBehaviour
     {
         if (spawner != null)
         {
+            // Notify spawner that pellet has been collected
             spawner.PelletCollected(gameObject);
         }
 

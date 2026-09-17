@@ -10,7 +10,7 @@ public class Bot : MonoBehaviour
     private GameObject currentTargetPellet;
     private bool isSearching = true;
     
-    // Starts searching for pellets the moment spawner is set
+    // Sets spawner and starts searching for pellets immediately
     public void SetPelletSpawner(PelletSpawner spawner)
     {
         if (spawner == null) {Debug.LogError("Bot requires a Pellet spawner to be set!"); return;}
