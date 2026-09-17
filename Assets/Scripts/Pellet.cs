@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class Pellet : MonoBehaviour
 {
+    private PelletSpawner spawner;
+
+    public void SetSpawner(PelletSpawner spawnerRef)
+    {
+        spawner = spawnerRef;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         // Check if the player collected the pellet
@@ -13,15 +20,24 @@ public class Pellet : MonoBehaviour
             {
                 shooter.AddAmmo(1);
             }
-            
-            // Destroy the pellet object so it disappears
-            Destroy(gameObject);
+            CollectPellet();
         }
 
         // Check if the bot collected the pellet
         else if (other.CompareTag("Bot"))
         {
-            Destroy(gameObject);
+            CollectPellet();
         }
+    }
+
+    private void CollectPellet()
+    {
+        if (spawner != null)
+        {
+            spawner.PelletCollected(gameObject);
+        }
+
+        // Destroy the pellet object so it disappears
+        Destroy(gameObject);
     }
 }

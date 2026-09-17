@@ -22,18 +22,23 @@ public class PlayerShooting : MonoBehaviour
         }
     }
 
+    public int GetAmmoCount()
+    {
+        return ammoCount;
+    }
+
     public void AddAmmo(int amount)
     {
         ammoCount += amount;
 
         // Send the updated total to the UI Manager
-        UIManager.Instance.UpdateAmmoDisplay(ammoCount);
+        GameManager.Instance.UpdateAmmoDisplay(ammoCount);
     }
 
     public void ResetAmmo()
     {
         ammoCount = 0;
-        UIManager.Instance.UpdateAmmoDisplay(ammoCount);
+        GameManager.Instance.UpdateAmmoDisplay(ammoCount);
     }
 
     public void SetProjectileStatus(bool status) {
@@ -64,6 +69,6 @@ public class PlayerShooting : MonoBehaviour
         isProjectileInFlight = true;
 
         // Update the UI immediately after shooting
-        UIManager.Instance.UpdateAmmoDisplay(ammoCount);
+        GameManager.Instance.UpdateAmmoDisplay(ammoCount);
     }
 }

@@ -65,10 +65,25 @@ public class PelletSpawner : MonoBehaviour
             if (isValidPos) 
             {
                 GameObject pellet = Instantiate(pelletPrefab, randomSpawnPosition, Quaternion.identity);
+                pellet.GetComponent<Pellet>().SetSpawner(this);
 
                 spawnedPellets.Add(pellet);
                 spawnedPositions.Add(randomSpawnPosition);
             }
         }
     }
+
+    public void PelletCollected(GameObject pellet)
+    {
+        if (spawnedPellets.Contains(pellet))
+        {
+            spawnedPellets.Remove(pellet);
+        }
+
+        // Trigger game over check immediately
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.CheckForGameOverDelayed();
+        }
+}
 }

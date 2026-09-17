@@ -1,8 +1,11 @@
 using UnityEngine;
-using System.Collections.Generic;
 
-public class PlatformTrigger : MonoBehaviour
+public class Platform : MonoBehaviour
 {
+    [SerializeField] private PelletSpawner pelletSpawner;
+    [SerializeField] private BotSpawner botSpawner;
+    [SerializeField] private GameObject trees;
+
     public bool isFirstPlatform = false; // Checked true only for Platform 1
     private bool hasActivated = false;
 
@@ -12,7 +15,22 @@ public class PlatformTrigger : MonoBehaviour
         if (isFirstPlatform)
         {
             ActivatePlatform();
+            Debug.Log("Platform activated!");
+            GameManager.Instance.setPlatform(this);
         }
+    }
+
+    public PelletSpawner GetPelletSpawner() {
+        return pelletSpawner;
+    }
+
+    public BotSpawner GetBotSpawner() {
+        return botSpawner;
+    }
+
+    public Trees GetTreesScript() {
+        Trees treesScript = trees.GetComponent<Trees>();
+        return treesScript; 
     }
 
     private void OnTriggerEnter(Collider other)
@@ -25,6 +43,7 @@ public class PlatformTrigger : MonoBehaviour
 
             ActivatePlatform();
             Debug.Log("Platform activated!");
+            GameManager.Instance.setPlatform(this);
         }
     }
 
@@ -37,8 +56,8 @@ public class PlatformTrigger : MonoBehaviour
 
             if (proj != null)
             {
+                Debug.Log("Projectile hit boundary!");
                 proj.DestroyProjectile();
-                Debug.Log("Projectile destroyed!");
             }
         }
     }
@@ -46,8 +65,7 @@ public class PlatformTrigger : MonoBehaviour
     public void ActivatePlatform()
     {
         hasActivated = true;
-
-        GetComponent<PelletSpawner>().SpawnPellets();
-        GetComponent<BotSpawner>().SpawnBot();
+        if (pelletSpawner != null) pelletSpawner.SpawnPellets();
+        if (botSpawner != null) botSpawner.SpawnBot();
     }
 }

@@ -11,9 +11,11 @@ public class Projectile : MonoBehaviour
         if (collision.transform.parent != null && collision.transform.parent.CompareTag("Tree"))
         {
             Destroy(collision.transform.parent.gameObject);
+            Debug.Log("Projectile hit tree!");
         }
 
         // Destroy projectile on hit
+        Debug.Log("Projectile destroyed!");
         DestroyProjectile();
     }
 
@@ -24,5 +26,10 @@ public class Projectile : MonoBehaviour
             ownerShooter.SetProjectileStatus(false);
         }
         Destroy(gameObject);
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.CheckForGameOverDelayed();
+        }
     }
 }

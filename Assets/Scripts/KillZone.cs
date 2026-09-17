@@ -8,11 +8,10 @@ public class KillZone : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (other.CompareTag("Player"))
+            if (GameManager.Instance != null)
             {
                 // Trigger the game over screen on fall
-
-                RespawnPlayer(other.gameObject);
+                GameManager.Instance.TriggerLoss("You fell off the platform!");
             }
         }
     }
