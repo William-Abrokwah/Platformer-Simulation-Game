@@ -1,13 +1,12 @@
 # Platformer Simulation Game
 
-A 3D first-person mini-game created in Unity3D featuring resource management, basic obstacle destruction, and competing AI bot dynamics across floating platforms.
-
-Preview: N/A
+A 3D first-person mini-game created in Unity3D featuring resource management, basic obstacle destruction, and competing AI bot dynamics across floating platforms. Made as an assignment for COMP 521.
 
 ## 📌 Introduction / Overview
 
 This project is a single-level 3D game prototype in which the player navigates across four floating platforms to reach a final goal area. To advance, the player must collect food pellets to gain ammo, shoot down tree barriers blocking platform gaps, and manage resources efficiently before a competing AI bot consumes the available pellets.
 
+Video Preview: https://youtu.be/enfoUCSJSBw
 
 ## 🚀 Features (MVP)
 
