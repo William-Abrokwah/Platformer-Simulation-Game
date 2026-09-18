@@ -42,8 +42,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void setPlatform(Platform platform) {
+    // Sets current Platform the player is on
+    public void SetPlatform(Platform platform) {
+        if (platform == null) {
+            Debug.LogError("A platform is required!");
+            return;
+        }
         currentPlatform = platform;
+    }
+
+    public Platform GetPlatform() {
+        if (currentPlatform == null)
+        {
+            Debug.LogError("No currentPlatform has been set!");
+        }
+        return currentPlatform;
     }
 
     public void UpdateAmmoDisplay(int currentAmmo)
@@ -83,8 +96,7 @@ public class GameManager : MonoBehaviour
     }
 
     public void RestartGame() {
-        // Reset time scale before reloading, otherwise the game remains paused
-        Time.timeScale = 1f;
+        Time.timeScale = 1f; // Resetting time scale
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -102,11 +114,19 @@ public class GameManager : MonoBehaviour
 
     public void CheckForGameOver()
     {
+        if (currentPlatform == null) { 
+            Debug.LogError("No current platform has been set!"); 
+            return; 
+        }
+
         Trees treesScript = currentPlatform.GetTreesScript();
         PelletSpawner pelletSpawner = currentPlatform.GetPelletSpawner();
         PlayerShooting playerShooter = FindFirstObjectByType<PlayerShooting>();
 
-        if (treesScript == null || pelletSpawner == null || playerShooter == null) {Debug.Log("Error!!!!"); return;}
+        if (playerShooter == null) {
+            Debug.LogError("Can't find player shooter!"); 
+            return;
+        }
 
         // Check if a 2 tree gap is open
         if (treesScript.IsGapOpen()) return;
@@ -116,7 +136,13 @@ public class GameManager : MonoBehaviour
 
         // Get remaining uncollected pellets on platform
         List<GameObject> pellets = pelletSpawner.GetSpawnedPellets();
-        pellets.RemoveAll(pellet => pellet == null);
+        
+        // Check that all destroyed pellets have been removed from the list
+        if (pellets.Exists(pellet => pellet == null))
+        {
+            Debug.LogError("A destroyed pellet is still in the pellet list!");
+        }
+
         int remainingPellets = pellets.Count;
 
         // Trigger game over if progress is impossible

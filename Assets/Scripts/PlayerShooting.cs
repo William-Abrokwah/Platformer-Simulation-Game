@@ -30,8 +30,6 @@ public class PlayerShooting : MonoBehaviour
     public void AddAmmo(int amount)
     {
         ammoCount += amount;
-
-        // Send the updated total to the UI Manager
         GameManager.Instance.UpdateAmmoDisplay(ammoCount);
     }
 
@@ -54,16 +52,20 @@ public class PlayerShooting : MonoBehaviour
 
         // Pass player reference to projectile script
         Projectile projScript = proj.GetComponent<Projectile>();
-        if (projScript != null)
+        if (projScript == null)
         {
-            projScript.ownerShooter = this;
+            Debug.LogError("Projectile is missing the projectile script!");
+            return;
         }
+        projScript.setOwnerShooter(this);
 
         // Set projectile velocity
         Rigidbody rb = proj.GetComponent<Rigidbody>();
-        if (rb != null) {
-            rb.linearVelocity = cameraTransform.forward * projectileSpeed;
+        if (rb == null) {
+            Debug.LogError("Projectile is missing rigid body!");
+            return;
         }
+        rb.linearVelocity = cameraTransform.forward * projectileSpeed;
 
         ammoCount--;
         isProjectileInFlight = true;

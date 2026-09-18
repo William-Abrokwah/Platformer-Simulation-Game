@@ -16,20 +16,44 @@ public class Platform : MonoBehaviour
         {
             ActivatePlatform();
             Debug.Log("Platform activated!");
-            GameManager.Instance.setPlatform(this);
+            if (GameManager.Instance == null)
+            {
+                Debug.LogError("GameManager is missing from the scene!");
+                return;
+            }
+
+            GameManager.Instance.SetPlatform(this);
         }
     }
 
     public PelletSpawner GetPelletSpawner() {
+        if (pelletSpawner == null)
+        {
+            Debug.LogError("No pelletSpawner has been set!");
+        }
         return pelletSpawner;
     }
 
     public BotSpawner GetBotSpawner() {
+        if (botSpawner == null)
+        {
+            Debug.LogError("No botSpawner has been set!");
+        }
         return botSpawner;
     }
 
     public Trees GetTreesScript() {
+        if (trees == null)
+        {
+            Debug.LogError("No trees has been set!");
+            return null;
+        }
         Trees treesScript = trees.GetComponent<Trees>();
+
+        if (treesScript == null)
+        {
+            Debug.LogError("Trees is missing treesScript!");
+        }
         return treesScript; 
     }
 
@@ -39,11 +63,19 @@ public class Platform : MonoBehaviour
         if (!hasActivated && other.CompareTag("Player"))
         {
             PlayerShooting shooter = other.GetComponent<PlayerShooting>();
-            if (shooter != null) shooter.ResetAmmo();
+            if (shooter == null) {
+                Debug.LogError("Player is missing the shooting script!");
+                return;
+            }
+            
+            shooter.ResetAmmo();
+            
+            // Clear pellets on previous platform
+            GameManager.Instance.GetPlatform().GetPelletSpawner().CollectAllPellets();
 
             ActivatePlatform();
             Debug.Log("Platform activated!");
-            GameManager.Instance.setPlatform(this);
+            GameManager.Instance.SetPlatform(this);
         }
     }
 

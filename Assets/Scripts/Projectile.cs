@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [HideInInspector]
-    public PlayerShooting ownerShooter;
+    private PlayerShooting ownerShooter;
     
     private void OnCollisionEnter(Collision collision)
     {
@@ -19,17 +18,25 @@ public class Projectile : MonoBehaviour
         DestroyProjectile();
     }
 
+    public void setOwnerShooter(PlayerShooting shooter) {
+        if (shooter == null) {
+            Debug.LogError("Projectile requires an owner!");
+            return;
+        }
+        ownerShooter = shooter;
+    }
+
     public void DestroyProjectile()
     {
-        if (ownerShooter != null)
+        if (ownerShooter == null)
         {
-            ownerShooter.SetProjectileStatus(false);
+            Debug.LogError("The ownerShooter of the projectile has not been set!");
+            return;
         }
-        Destroy(gameObject);
 
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.CheckForGameOverDelayed();
-        }
+        ownerShooter.SetProjectileStatus(false);
+        Destroy(gameObject);
+        
+        GameManager.Instance.CheckForGameOverDelayed();
     }
 }

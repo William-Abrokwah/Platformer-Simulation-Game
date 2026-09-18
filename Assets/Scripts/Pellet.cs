@@ -2,11 +2,15 @@ using UnityEngine;
 
 public class Pellet : MonoBehaviour
 {
-    private PelletSpawner spawner;
+    private PelletSpawner currentSpawner;
 
-    public void SetSpawner(PelletSpawner spawnerRef)
+    public void SetSpawner(PelletSpawner spawner)
     {
-        spawner = spawnerRef;
+        if (spawner == null) {
+            Debug.LogError("Pellet requires a Pellet spawner to be set!"); 
+            return;
+        }
+        currentSpawner = spawner;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -32,10 +36,10 @@ public class Pellet : MonoBehaviour
 
     private void CollectPellet()
     {
-        if (spawner != null)
+        if (currentSpawner != null)
         {
             // Notify spawner that pellet has been collected
-            spawner.PelletCollected(gameObject);
+            currentSpawner.PelletCollected(gameObject);
         }
 
         // Destroy the pellet object so it disappears

@@ -13,7 +13,10 @@ public class Bot : MonoBehaviour
     // Sets spawner and starts searching for pellets immediately
     public void SetPelletSpawner(PelletSpawner spawner)
     {
-        if (spawner == null) {Debug.LogError("Bot requires a Pellet spawner to be set!"); return;}
+        if (spawner == null) {
+            Debug.LogError("Bot requires a Pellet spawner to be set!"); 
+            return;
+        }
 
         currentSpawner = spawner;
         StartCoroutine(FindNextPellet()); 
@@ -49,8 +52,11 @@ public class Bot : MonoBehaviour
         isSearching = true;
         List<GameObject> pellets = currentSpawner.GetSpawnedPellets();
 
-        // Removes all "destroyed" pellets from the list
-        pellets.RemoveAll(pellet => pellet == null);
+        // Check that all destroyed pellets have been removed from the list
+        if (pellets.Exists(pellet => pellet == null))
+        {
+            Debug.LogError("A destroyed pellet is still in the pellet list!");
+        }
 
         if (pellets.Count > 0)
         {

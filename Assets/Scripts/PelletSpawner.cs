@@ -18,16 +18,25 @@ public class PelletSpawner : MonoBehaviour
 
     public List<GameObject> GetSpawnedPellets()
     {
+        if (spawnedPellets == null) {
+            Debug.LogError("No spawnedPellets list has beed created!");
+        }
         return spawnedPellets;
     }
 
     public void SpawnPellets()
     {
         Collider platformCollider = GetComponent<Collider>();
-        if (platformCollider == null) { Debug.LogError("The platform needs a Collider!"); return;}
+        if (platformCollider == null) {
+            Debug.LogError("The platform needs a Collider!"); 
+            return;
+        }
 
         GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if (player == null) { Debug.LogError("No GameObject with the Player tag found!"); return; }
+        if (player == null) { 
+            Debug.LogError("No GameObject with the Player tag found!"); 
+            return; 
+        }
 
         List<Vector3> spawnedPositions = new List<Vector3>();
         Bounds bounds = platformCollider.bounds;
@@ -65,12 +74,25 @@ public class PelletSpawner : MonoBehaviour
             if (isValidPos) 
             {
                 GameObject pellet = Instantiate(pelletPrefab, randomSpawnPosition, Quaternion.identity);
-                pellet.GetComponent<Pellet>().SetSpawner(this);
+                Pellet pelletScript = pellet.GetComponent<Pellet>();
+                if (pelletScript == null) {
+                    Debug.LogError("Pellet script missing from GameObject!"); 
+                }
+                pelletScript.SetSpawner(this);
 
                 spawnedPellets.Add(pellet);
                 spawnedPositions.Add(randomSpawnPosition);
             }
         }
+    }
+
+    public void CollectAllPellets() {
+        foreach (GameObject pellet in spawnedPellets)
+        {
+            Destroy(pellet);
+        }
+
+        spawnedPellets.Clear();
     }
 
     public void PelletCollected(GameObject pellet)
@@ -81,9 +103,6 @@ public class PelletSpawner : MonoBehaviour
         }
 
         // Trigger game over check immediately
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.CheckForGameOverDelayed();
-        }
-}
+        GameManager.Instance.CheckForGameOverDelayed();
+    }
 }

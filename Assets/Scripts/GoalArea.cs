@@ -6,11 +6,8 @@ public class GoalArea : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            if (GameManager.Instance != null)
-            {
-                // Trigger the victory screen when reached
-                GameManager.Instance.TriggerWin();
-            }
+            // Trigger the victory screen when reached
+            GameManager.Instance.TriggerWin();
         }
     }
 }
