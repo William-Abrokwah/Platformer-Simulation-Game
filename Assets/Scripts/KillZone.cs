@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class KillZone : MonoBehaviour
 {
-    [SerializeField] private Transform spawnPoint;
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))

@@ -8,6 +8,7 @@ public class GoalArea : MonoBehaviour
         {
             if (GameManager.Instance != null)
             {
+                // Trigger the victory screen when reached
                 GameManager.Instance.TriggerWin();
             }
         }
