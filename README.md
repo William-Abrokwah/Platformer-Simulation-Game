@@ -49,7 +49,7 @@ Includes HUD ammo counter, win screen on goal reach, and game over screens trigg
 
 1. **Clone the Repository:**
 ```bash
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/William-Abrokwah/Platformer-Simulation-Game.git
 ```
 
 2. **Open in Unity:**
